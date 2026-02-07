@@ -73,16 +73,17 @@ aidlc-workflows-helper
 
 3. **Install** — Extracts and copies the rules into your chosen folder:
    ```
-   <your-folder>/
-   ├── rules/
-   │   └── core-workflow.md
    <parent-folder>/
+   ├── <rules-subfolder>/
+   │   └── rules/
+   │       └── core-workflow.md
    └── aws-aidlc-rule-details/
        ├── common/
        ├── construction/
        ├── inception/
        └── operations/
    ```
+   For example, choosing `.kiro/steering` installs to `.kiro/steering/rules/` and `.kiro/aws-aidlc-rule-details/`.
 
 4. **Patch** — Updates path references inside `core-workflow.md` to match your folder structure.
 
