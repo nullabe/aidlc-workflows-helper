@@ -23,34 +23,34 @@ This tool automates the setup described in the [AI-DLC workflows README](https:/
 ### macOS (Apple Silicon)
 
 ```bash
-curl -sL https://github.com/awslabs/aidlc-workflows-helper/releases/latest/download/aidlc-workflows-helper-aarch64-apple-darwin.tar.gz | tar xz
+curl -sL https://github.com/nullabe/aidlc-workflows-helper/releases/latest/download/aidlc-workflows-helper-aarch64-apple-darwin.tar.gz | tar xzf -
 sudo mv aidlc-workflows-helper /usr/local/bin/
 ```
 
 ### macOS (Intel)
 
 ```bash
-curl -sL https://github.com/awslabs/aidlc-workflows-helper/releases/latest/download/aidlc-workflows-helper-x86_64-apple-darwin.tar.gz | tar xz
+curl -sL https://github.com/nullabe/aidlc-workflows-helper/releases/latest/download/aidlc-workflows-helper-x86_64-apple-darwin.tar.gz | tar xzf -
 sudo mv aidlc-workflows-helper /usr/local/bin/
 ```
 
 ### Linux (x86_64)
 
 ```bash
-curl -sL https://github.com/awslabs/aidlc-workflows-helper/releases/latest/download/aidlc-workflows-helper-x86_64-unknown-linux-gnu.tar.gz | tar xz
+curl -sL https://github.com/nullabe/aidlc-workflows-helper/releases/latest/download/aidlc-workflows-helper-x86_64-unknown-linux-gnu.tar.gz | tar xzf -
 sudo mv aidlc-workflows-helper /usr/local/bin/
 ```
 
 ### Linux (aarch64)
 
 ```bash
-curl -sL https://github.com/awslabs/aidlc-workflows-helper/releases/latest/download/aidlc-workflows-helper-aarch64-unknown-linux-gnu.tar.gz | tar xz
+curl -sL https://github.com/nullabe/aidlc-workflows-helper/releases/latest/download/aidlc-workflows-helper-aarch64-unknown-linux-gnu.tar.gz | tar xzf -
 sudo mv aidlc-workflows-helper /usr/local/bin/
 ```
 
 ### Windows (x86_64)
 
-Download `aidlc-workflows-helper-x86_64-pc-windows-msvc.zip` from the [latest release](https://github.com/awslabs/aidlc-workflows-helper/releases/latest), extract it, and add the folder to your `PATH`.
+Download `aidlc-workflows-helper-x86_64-pc-windows-msvc.zip` from the [latest release](https://github.com/nullabe/aidlc-workflows-helper/releases/latest), extract it, and add the folder to your `PATH`.
 
 ## Usage
 
@@ -122,7 +122,7 @@ The agent will pick up the rules from the installed folder and guide you through
 Requires [Rust](https://rustup.rs/) 1.85+ (edition 2024).
 
 ```bash
-git clone https://github.com/awslabs/aidlc-workflows-helper.git
+git clone https://github.com/nullabe/aidlc-workflows-helper.git
 cd aidlc-workflows-helper
 cargo build --release
 ```
