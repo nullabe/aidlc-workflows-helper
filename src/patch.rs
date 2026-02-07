@@ -17,8 +17,8 @@ pub fn patch_rule_details_path(rules_folder: &str, details_parent: &str) -> Resu
         return Ok(());
     }
 
-    let mut content = fs::read_to_string(&workflow_path)
-        .context("Failed to read core-workflow.md")?;
+    let mut content =
+        fs::read_to_string(&workflow_path).context("Failed to read core-workflow.md")?;
 
     let replacement = format!("{details_parent}/aws-aidlc-rule-details/");
     for default in DEFAULT_PATHS {

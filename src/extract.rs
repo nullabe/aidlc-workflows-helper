@@ -26,7 +26,9 @@ pub fn extract_and_install(
             if rel.is_empty() || entry.is_dir() {
                 continue;
             }
-            let dest = PathBuf::from(rules_folder).join("aws-aidlc-rules").join(rel);
+            let dest = PathBuf::from(rules_folder)
+                .join("aws-aidlc-rules")
+                .join(rel);
             write_entry(&mut entry, &dest)?;
             installed.push(dest);
         } else if let Some(rel) = entry_path.strip_prefix("aidlc-rules/aws-aidlc-rule-details/") {

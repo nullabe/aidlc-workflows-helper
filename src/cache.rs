@@ -22,9 +22,7 @@ pub fn cached_checksum_path(tag: &str) -> Result<PathBuf> {
 
 /// Check if a cached zip exists for the given tag.
 pub fn has_cached(tag: &str) -> bool {
-    cached_zip_path(tag)
-        .map(|p| p.exists())
-        .unwrap_or(false)
+    cached_zip_path(tag).map(|p| p.exists()).unwrap_or(false)
 }
 
 /// Store checksum alongside the cached zip.

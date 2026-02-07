@@ -13,8 +13,8 @@ pub fn write_manifest(installed_files: &[PathBuf], details_parent: &str) -> Resu
 
     for path in installed_files {
         if path.extension().is_some_and(|e| e == "md") {
-            let bytes = fs::read(path)
-                .with_context(|| format!("Failed to read {}", path.display()))?;
+            let bytes =
+                fs::read(path).with_context(|| format!("Failed to read {}", path.display()))?;
             let hash = format!("{:x}", Sha256::digest(&bytes));
             lines.push(format!("{}  {}", hash, path.display()));
         }

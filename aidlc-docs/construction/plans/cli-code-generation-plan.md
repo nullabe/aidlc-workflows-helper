@@ -88,8 +88,8 @@ src/
 - **Commit**: `feat: add gitignore management`
 
 ### Step 9: Integrity Manifest
-- [ ] Implement `integrity.rs` — `write_manifest()` computes SHA-256 of all installed `.md` files, writes `.aidlc-integrity.sha256`
-- [ ] Implement `integrity.rs` — `verify_manifest()` checks existing files against manifest, returns list of modified files
+- [x] Implement `integrity.rs` — `write_manifest()` computes SHA-256 of all installed `.md` files, writes `.aidlc-integrity.sha256`
+- [x] Implement `integrity.rs` — `verify_manifest()` checks existing files against manifest, returns list of modified files
 - [ ] Stories: US-9 (AC-9.1, AC-9.2, AC-9.3)
 - **Commit**: `feat: add installed rules integrity manifest`
 

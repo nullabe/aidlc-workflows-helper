@@ -5,11 +5,7 @@ use std::io::Write;
 use std::path::Path;
 
 /// Download a file from `url` to `dest`. Returns SHA-256 hex digest.
-pub fn download_to(
-    client: &reqwest::blocking::Client,
-    url: &str,
-    dest: &Path,
-) -> Result<String> {
+pub fn download_to(client: &reqwest::blocking::Client, url: &str, dest: &Path) -> Result<String> {
     if let Some(parent) = dest.parent() {
         fs::create_dir_all(parent)?;
     }
