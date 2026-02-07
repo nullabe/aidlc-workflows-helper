@@ -74,7 +74,7 @@ aidlc-workflows-helper
 3. **Install** — Extracts and copies the rules into your chosen folder:
    ```
    <your-folder>/
-   ├── aws-aidlc-rules/
+   ├── rules/
    │   └── core-workflow.md
    <parent-folder>/
    └── aws-aidlc-rule-details/
