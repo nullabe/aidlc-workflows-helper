@@ -119,7 +119,7 @@ The agent will pick up the rules from the installed folder and guide you through
 
 ## Building from Source
 
-Requires [Rust](https://rustup.rs/) (edition 2021+).
+Requires [Rust](https://rustup.rs/) 1.85+ (edition 2024).
 
 ```bash
 git clone https://github.com/awslabs/aidlc-workflows-helper.git
