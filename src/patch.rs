@@ -1,3 +1,11 @@
+//! Patches `core-workflow.md` after installation.
+//!
+//! Two kinds of patches are applied:
+//! 1. **Path references** — The upstream `core-workflow.md` hardcodes paths like
+//!    `.kiro/aws-aidlc-rule-details/`. These are replaced with the user's actual folder.
+//! 2. **Commit workflow** — Optionally appends a commit convention section (Conventional
+//!    Commits or free-form) based on the user's preference.
+
 use crate::prompt::CommitWorkflow;
 use anyhow::{Context, Result};
 use std::fs;

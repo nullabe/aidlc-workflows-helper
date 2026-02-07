@@ -1,10 +1,19 @@
+//! HTTPS file download with SHA-256 checksum verification.
+//!
+//! Downloads are performed over HTTPS only (enforced by the `reqwest` client configured
+//! with `https_only(true)` in `main.rs`). The checksum is computed during download and
+//! returned to the caller for storage in the cache.
+
 use anyhow::{bail, Context, Result};
 use sha2::{Digest, Sha256};
 use std::fs;
 use std::io::Write;
 use std::path::Path;
 
-/// Download a file from `url` to `dest`. Returns SHA-256 hex digest.
+/// Download a file from `url` to `dest`, computing its SHA-256 hash on the fly.
+///
+/// Creates parent directories if they don't exist. Returns the hex-encoded SHA-256
+/// digest of the downloaded content.
 pub fn download_to(client: &reqwest::blocking::Client, url: &str, dest: &Path) -> Result<String> {
     if let Some(parent) = dest.parent() {
         fs::create_dir_all(parent)?;
@@ -30,7 +39,10 @@ pub fn download_to(client: &reqwest::blocking::Client, url: &str, dest: &Path) -
     Ok(hash)
 }
 
-/// Verify a file's SHA-256 matches the expected hash.
+/// Verify that a file's SHA-256 hash matches `expected`.
+///
+/// If the hash doesn't match, the file is deleted and an error is returned.
+/// This prevents using corrupted or tampered downloads.
 pub fn verify_checksum(path: &Path, expected: &str) -> Result<()> {
     let bytes = fs::read(path).context("Failed to read file for checksum")?;
     let mut hasher = Sha256::new();

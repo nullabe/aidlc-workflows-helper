@@ -1,3 +1,7 @@
+//! ASCII art banner displayed on startup.
+//!
+//! Shows the tool name and version (read from Cargo.toml at compile time).
+
 use console::style;
 
 /// Displays the ASCII art banner with tool name and version.

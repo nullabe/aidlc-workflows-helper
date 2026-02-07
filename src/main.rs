@@ -1,3 +1,8 @@
+//! aidlc-workflows-helper — CLI tool to install AI-DLC workflow rules into any project.
+//!
+//! This binary orchestrates the full interactive installation flow:
+//! folder selection → download → extract → patch → commit workflow → gitignore → integrity manifest.
+
 mod banner;
 mod cache;
 mod download;
@@ -21,6 +26,8 @@ fn main() {
     }
 }
 
+/// Runs the full interactive installation flow. Returns an error if any step fails,
+/// which `main()` catches and displays as a styled error message before exiting non-zero.
 fn run() -> Result<()> {
     banner::print_banner();
 
@@ -130,6 +137,8 @@ fn run() -> Result<()> {
     Ok(())
 }
 
+/// Creates an animated spinner for long-running operations (download, extraction).
+/// Call `.finish_and_clear()` when the operation completes.
 fn make_spinner(msg: &str) -> ProgressBar {
     let pb = ProgressBar::new_spinner();
     pb.set_style(
@@ -142,6 +151,8 @@ fn make_spinner(msg: &str) -> ProgressBar {
     pb
 }
 
+/// Prints a visual tree of the installed file structure so the user can verify
+/// where rules and rule-details were placed.
 fn print_tree(rules_folder: &str, details_parent: &str) {
     println!("  {}", style("Installed file tree:").dim());
     println!("  {rules_folder}/");

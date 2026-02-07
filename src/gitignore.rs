@@ -1,3 +1,8 @@
+//! `.gitignore` file manipulation.
+//!
+//! Appends entries to `.gitignore` with deduplication (won't add an entry that already
+//! exists, even if the trailing slash differs). Creates the file if it doesn't exist.
+
 use anyhow::Result;
 use std::fs;
 use std::path::Path;

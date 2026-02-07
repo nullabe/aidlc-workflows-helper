@@ -1,3 +1,9 @@
+//! GitHub Releases API client.
+//!
+//! Fetches the latest release metadata from `awslabs/aidlc-workflows` to determine
+//! the current version tag and zip download URL. Validates that the download URL
+//! points to the trusted `github.com/awslabs/aidlc-workflows` origin.
+
 use anyhow::{bail, Context, Result};
 use serde::Deserialize;
 
@@ -15,13 +21,16 @@ struct Release {
     assets: Vec<Asset>,
 }
 
-/// Info about the latest release.
+/// Metadata about the latest GitHub release (version tag and zip download URL).
 pub struct ReleaseInfo {
     pub tag: String,
     pub zip_url: String,
 }
 
-/// Fetch latest release info from GitHub API.
+/// Fetch the latest release from the GitHub API.
+///
+/// Returns the version tag and zip asset URL. Rejects any download URL that doesn't
+/// point to `https://github.com/awslabs/aidlc-workflows/` to prevent supply-chain attacks.
 pub fn fetch_latest_release(client: &reqwest::blocking::Client) -> Result<ReleaseInfo> {
     let release: Release = client
         .get(API_URL)

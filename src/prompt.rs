@@ -1,7 +1,13 @@
+//! Interactive CLI prompts for user input.
+//!
+//! Handles all user-facing prompts: folder selection (with presets for Kiro, Amazon Q,
+//! Cursor), overwrite confirmation, gitignore options, and commit workflow preference.
+//! Uses `dialoguer` for styled interactive selection and confirmation.
+
 use anyhow::Result;
 use dialoguer::{Confirm, Input, Select};
 
-/// Folder preset with display name and path.
+/// A folder preset shown in the interactive selection menu.
 struct Preset {
     label: &'static str,
     path: &'static str,
@@ -82,7 +88,8 @@ pub fn confirm_gitignore_aidlc_docs() -> Result<bool> {
         .interact()?)
 }
 
-/// Commit workflow preference.
+/// User's preferred commit workflow, selected during setup.
+/// Determines what (if anything) gets appended to `core-workflow.md`.
 pub enum CommitWorkflow {
     Conventional,
     FreeForm,

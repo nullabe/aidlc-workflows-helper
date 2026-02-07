@@ -1,3 +1,18 @@
+//! Version-keyed download cache.
+//!
+//! Caches downloaded release zips in a platform-appropriate directory so that
+//! installing rules in multiple projects doesn't require re-downloading.
+//!
+//! Cache layout:
+//! ```text
+//! ~/.cache/aidlc-workflows-helper/   (Linux/macOS)
+//! └── v0.1.1/
+//!     ├── aidlc-rules.zip
+//!     └── sha256
+//! ```
+//!
+//! When a new version is detected, old cached versions are automatically cleaned up.
+
 use anyhow::{Context, Result};
 use std::fs;
 use std::path::PathBuf;
@@ -45,7 +60,10 @@ pub fn read_checksum(tag: &str) -> Result<Option<String>> {
     }
 }
 
-/// Delete all cached versions except the given tag.
+/// Delete all cached versions except `keep_tag`.
+///
+/// Called after downloading a new version to ensure only one version is cached at a time.
+/// Failures to delete individual directories are silently ignored (best-effort cleanup).
 pub fn cleanup_old_versions(keep_tag: &str) -> Result<()> {
     let root = cache_root()?;
     if !root.exists() {

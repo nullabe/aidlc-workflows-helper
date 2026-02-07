@@ -6,7 +6,15 @@ Instead of manually downloading, extracting, and copying rule files — just run
 
 ## What is AI-DLC?
 
-[AI-DLC](https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/) is an intelligent software development workflow that guides AI coding agents through structured phases (Inception → Construction → Operations). It works with any agent that supports project-level rules: **Kiro**, **Amazon Q Developer**, **Cursor**, and others.
+[AI-DLC](https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/) is a methodology that reimagines software development by positioning AI as a central collaborator rather than just an assistant. It guides AI coding agents through a structured three-phase workflow:
+
+- **Inception** — AI transforms your intent into detailed requirements, user stories, and units of work. The team validates AI's proposals through structured questions.
+- **Construction** — Using the validated context from Inception, AI proposes architecture, generates code, and produces tests. The team provides oversight on technical decisions.
+- **Operations** — AI applies accumulated context to manage infrastructure and deployments, with team oversight.
+
+Each phase builds on the previous one, giving AI increasingly rich context to work with. The methodology works with any agent that supports project-level rules: **[Kiro](https://kiro.dev/)**, **[Amazon Q Developer](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-in-IDE.html)**, **[Cursor](https://www.cursor.com/)**, and others.
+
+The key principle: **AI proposes, humans approve.** Every critical decision requires explicit user confirmation.
 
 This tool automates the setup described in the [AI-DLC workflows README](https://github.com/awslabs/aidlc-workflows#readme).
 
@@ -88,7 +96,7 @@ Start any AI-DLC workflow by telling your AI agent:
 
 > "Using AI-DLC, I want to build ..."
 
-The agent will pick up the rules from the installed folder and guide you through the structured development workflow.
+The agent will pick up the rules from the installed folder and guide you through the structured development workflow. For more details on how to use AI-DLC once installed, see the [AI-DLC workflows documentation](https://github.com/awslabs/aidlc-workflows#usage).
 
 ## Features
 
@@ -152,17 +160,13 @@ src/
 
 All of these must pass before merging:
 
-- `cargo test` — 18 unit tests across 5 modules
+- `cargo test` — all unit tests pass
 - `cargo clippy` — zero warnings
 - `cargo fmt --check` — consistent formatting
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feat/my-feature`)
-3. Commit using [conventional commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`, `ci:`, `test:`, `chore:`, `refactor:`)
-4. Ensure all quality gates pass
-5. Open a pull request
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to this project.
 
 ## License
 

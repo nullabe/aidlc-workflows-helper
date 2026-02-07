@@ -1,3 +1,12 @@
+//! Zip extraction and rule file installation.
+//!
+//! Extracts the AI-DLC release zip and copies files into the user's chosen folder structure.
+//! The zip contains `aidlc-rules/aws-aidlc-rules/` (the core workflow) and
+//! `aidlc-rules/aws-aidlc-rule-details/` (supporting documents). These are mapped to:
+//!
+//! - `<rules_folder>/aws-aidlc-rules/` — e.g. `.kiro/steering/aws-aidlc-rules/`
+//! - `<details_parent>/aws-aidlc-rule-details/` — e.g. `.kiro/aws-aidlc-rule-details/`
+
 use anyhow::{Context, Result};
 use std::fs;
 use std::io;

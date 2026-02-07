@@ -1,3 +1,10 @@
+//! Integrity manifest for installed rule files.
+//!
+//! After installation, a `.aidlc-integrity.sha256` manifest is written containing
+//! SHA-256 hashes of all installed `.md` files. On subsequent runs, the manifest is
+//! checked to detect if any rule files have been modified since installation — this
+//! warns users about potential tampering before they overwrite.
+
 use anyhow::{Context, Result};
 use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
@@ -71,7 +78,7 @@ mod tests {
         let md_file = dir.path().join("test.md");
         fs::write(&md_file, "# Hello").unwrap();
 
-        write_manifest(&[md_file.clone()], &parent).unwrap();
+        write_manifest(std::slice::from_ref(&md_file), &parent).unwrap();
 
         let manifest = dir.path().join(".aidlc-integrity.sha256");
         assert!(manifest.exists());
@@ -88,7 +95,7 @@ mod tests {
         let md_file = dir.path().join("test.md");
         fs::write(&md_file, "# Original").unwrap();
 
-        write_manifest(&[md_file.clone()], &parent).unwrap();
+        write_manifest(std::slice::from_ref(&md_file), &parent).unwrap();
 
         // Tamper with the file
         fs::write(&md_file, "# Tampered").unwrap();
