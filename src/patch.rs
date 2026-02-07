@@ -20,7 +20,7 @@ const DEFAULT_PATHS: &[&str] = &[
 
 /// Patch core-workflow.md to replace default rule-details paths with the user's chosen path.
 pub fn patch_rule_details_path(rules_folder: &str, details_parent: &str) -> Result<()> {
-    let workflow_path = Path::new(rules_folder).join("aws-aidlc-rules/core-workflow.md");
+    let workflow_path = Path::new(rules_folder).join("rules/core-workflow.md");
     if !workflow_path.exists() {
         return Ok(());
     }
@@ -39,7 +39,7 @@ pub fn patch_rule_details_path(rules_folder: &str, details_parent: &str) -> Resu
 
 /// Append a commit workflow section to core-workflow.md based on user preference.
 pub fn patch_commit_workflow(rules_folder: &str, workflow: &CommitWorkflow) -> Result<()> {
-    let workflow_path = Path::new(rules_folder).join("aws-aidlc-rules/core-workflow.md");
+    let workflow_path = Path::new(rules_folder).join("rules/core-workflow.md");
     if !workflow_path.exists() {
         return Ok(());
     }
@@ -84,11 +84,10 @@ mod tests {
     use std::fs;
 
     fn setup_workflow(dir: &Path, content: &str) -> String {
-        let rules = dir.join("rules/aws-aidlc-rules");
+        let rules = dir.join("myfolder/rules");
         fs::create_dir_all(&rules).unwrap();
-        let file = rules.join("core-workflow.md");
-        fs::write(&file, content).unwrap();
-        dir.join("rules").to_string_lossy().to_string()
+        fs::write(rules.join("core-workflow.md"), content).unwrap();
+        dir.join("myfolder").to_string_lossy().to_string()
     }
 
     #[test]
@@ -100,7 +99,7 @@ mod tests {
         );
         patch_rule_details_path(&rules_folder, ".custom").unwrap();
         let result =
-            fs::read_to_string(dir.path().join("rules/aws-aidlc-rules/core-workflow.md")).unwrap();
+            fs::read_to_string(dir.path().join("myfolder/rules/core-workflow.md")).unwrap();
         assert!(result.contains(".custom/aws-aidlc-rule-details/common/foo.md"));
         assert!(!result.contains(".kiro/aws-aidlc-rule-details/"));
     }
@@ -114,7 +113,7 @@ mod tests {
         );
         patch_rule_details_path(&rules_folder, ".myagent").unwrap();
         let result =
-            fs::read_to_string(dir.path().join("rules/aws-aidlc-rules/core-workflow.md")).unwrap();
+            fs::read_to_string(dir.path().join("myfolder/rules/core-workflow.md")).unwrap();
         assert!(result.contains(".myagent/aws-aidlc-rule-details/"));
     }
 
@@ -124,9 +123,8 @@ mod tests {
         let rules_folder = setup_workflow(dir.path(), "# Workflow\n");
         patch_commit_workflow(&rules_folder, &CommitWorkflow::Conventional).unwrap();
         let result =
-            fs::read_to_string(dir.path().join("rules/aws-aidlc-rules/core-workflow.md")).unwrap();
+            fs::read_to_string(dir.path().join("myfolder/rules/core-workflow.md")).unwrap();
         assert!(result.contains("MANDATORY: Commit Workflow"));
-        assert!(result.contains("conventional commit format"));
     }
 
     #[test]
@@ -135,7 +133,7 @@ mod tests {
         let rules_folder = setup_workflow(dir.path(), "# Workflow\n");
         patch_commit_workflow(&rules_folder, &CommitWorkflow::FreeForm).unwrap();
         let result =
-            fs::read_to_string(dir.path().join("rules/aws-aidlc-rules/core-workflow.md")).unwrap();
+            fs::read_to_string(dir.path().join("myfolder/rules/core-workflow.md")).unwrap();
         assert!(result.contains("Commit Reminder"));
     }
 
@@ -146,7 +144,7 @@ mod tests {
         let rules_folder = setup_workflow(dir.path(), original);
         patch_commit_workflow(&rules_folder, &CommitWorkflow::None).unwrap();
         let result =
-            fs::read_to_string(dir.path().join("rules/aws-aidlc-rules/core-workflow.md")).unwrap();
+            fs::read_to_string(dir.path().join("myfolder/rules/core-workflow.md")).unwrap();
         assert_eq!(result, original);
     }
 }

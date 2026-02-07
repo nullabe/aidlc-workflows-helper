@@ -31,108 +31,113 @@ fn main() {
 fn run() -> Result<()> {
     banner::print_banner();
 
-    // 1. Folder selection
-    ui::header("📁 Target Folder");
+    const TOTAL: u8 = 6;
+
+    // ── Step 1: Folder selection ──
+    ui::section(1, TOTAL, "📁 Where do you want to install AI-DLC rules?");
     let (rules_folder, details_parent) = prompt::select_folder()?;
-    ui::step_done(&format!("Rules folder: {rules_folder}"));
     ui::step_done(&format!(
-        "Rule details: {details_parent}/aws-aidlc-rule-details/"
+        "Rules     → {rules_folder}/rules/core-workflow.md"
+    ));
+    ui::step_done(&format!(
+        "Details   → {details_parent}/aws-aidlc-rule-details/"
     ));
 
-    // 2. Check for existing rules + integrity
+    // Check for existing rules + integrity
     if extract::rules_exist(&rules_folder, &details_parent) {
         let modified = integrity::verify_manifest(&details_parent)?;
         if !modified.is_empty() {
-            ui::warn("The following rule files have been modified since installation:");
+            ui::warn("These rule files have been modified since last installation:");
             for f in &modified {
-                println!("    • {f}");
+                println!("      {}", style(format!("• {f}")).yellow());
             }
         }
         if !prompt::confirm_overwrite()? {
-            ui::info("Skipped. No changes made.");
+            ui::info("Skipped — no changes made.");
             return Ok(());
         }
     }
 
-    // 3. Fetch latest release info
-    ui::header("🌐 Fetching Latest Release");
+    // ── Step 2: Download ──
+    ui::section(2, TOTAL, "🌐 Fetching latest AI-DLC rules");
     let spinner = make_spinner("Contacting GitHub...");
     let client = reqwest::blocking::Client::builder()
         .https_only(true)
         .build()?;
     let release = github::fetch_latest_release(&client)?;
     spinner.finish_and_clear();
-    ui::step_done(&format!("Latest release: {}", release.tag));
+    ui::step_done(&format!("Latest release: {}", style(&release.tag).bold()));
 
-    // 4. Download or use cache
-    ui::header("📦 Download");
     let zip_path = cache::cached_zip_path(&release.tag)?;
 
     if cache::has_cached(&release.tag) {
-        // Verify cached checksum
         if let Some(expected) = cache::read_checksum(&release.tag)? {
             download::verify_checksum(&zip_path, &expected)?;
         }
-        ui::info(&format!("Using cached release {}", release.tag));
+        ui::info(&format!(
+            "Using cached release {} — skipping download",
+            style(&release.tag).bold()
+        ));
     } else {
         let spinner = make_spinner("Downloading...");
         let checksum = download::download_to(&client, &release.zip_url, &zip_path)?;
         spinner.finish_and_clear();
-        ui::step_done("Download complete");
-
-        // Store checksum and clean old versions
-        let spinner = make_spinner("Verifying integrity...");
         cache::store_checksum(&release.tag, &checksum)?;
         cache::cleanup_old_versions(&release.tag)?;
-        spinner.finish_and_clear();
-        ui::step_done("Checksum verified");
+        ui::step_done("Downloaded and verified (SHA-256 ✓)");
     }
 
-    // 5. Extract and install
-    ui::header("📂 Installing Rules");
+    // ── Step 3: Install ──
+    ui::section(3, TOTAL, "📂 Installing rules");
     let spinner = make_spinner("Extracting...");
     let installed = extract::extract_and_install(&zip_path, &rules_folder, &details_parent)?;
     spinner.finish_and_clear();
     ui::step_done(&format!("{} files installed", installed.len()));
 
-    // 6. Patch core-workflow.md paths
+    // Patch core-workflow.md paths
     patch::patch_rule_details_path(&rules_folder, &details_parent)?;
     ui::step_done("Patched core-workflow.md path references");
 
-    // 7. Commit workflow preference
-    ui::header("📝 Commit Workflow");
+    // Write integrity manifest
+    integrity::write_manifest(&installed, &details_parent)?;
+    ui::step_done("Integrity manifest written");
+
+    // ── Step 4: Commit workflow ──
+    ui::section(4, TOTAL, "📝 Commit workflow preference");
     let commit_pref = prompt::select_commit_workflow()?;
     patch::patch_commit_workflow(&rules_folder, &commit_pref)?;
     match commit_pref {
         prompt::CommitWorkflow::None => ui::info("No commit rules added"),
-        _ => ui::step_done("Commit workflow added to core-workflow.md"),
+        _ => ui::step_done("Commit workflow patched into core-workflow.md"),
     }
 
-    // 8. Gitignore
-    ui::header("🔒 Gitignore");
-    // FR-12: always add aidlc-docs/audit.md
-    gitignore::add_to_gitignore("aidlc-docs/audit.md")?;
-    ui::step_done("Added aidlc-docs/audit.md to .gitignore");
+    // ── Step 5: Gitignore ──
+    ui::section(5, TOTAL, "🔒 Gitignore configuration");
 
-    if prompt::confirm_gitignore(&rules_folder)? {
-        gitignore::add_to_gitignore(&rules_folder)?;
-        ui::step_done(&format!("Added {rules_folder} to .gitignore"));
+    // FR-12: always add aidlc-docs/audit.md (no prompt)
+    gitignore::add_to_gitignore("aidlc-docs/audit.md")?;
+    ui::step_done("Auto-added aidlc-docs/audit.md to .gitignore");
+
+    if prompt::confirm_gitignore_rules(&rules_folder)? {
+        gitignore::add_to_gitignore(&format!("{rules_folder}/"))?;
+        ui::step_done(&format!("Added {rules_folder}/ to .gitignore"));
     }
     if prompt::confirm_gitignore_aidlc_docs()? {
         gitignore::add_to_gitignore("aidlc-docs/")?;
         ui::step_done("Added aidlc-docs/ to .gitignore");
     }
 
-    // 9. Write integrity manifest
-    integrity::write_manifest(&installed, &details_parent)?;
-    ui::step_done("Integrity manifest written");
-
-    // 10. Final summary
-    ui::header("✅ Installation Complete!");
-    println!();
+    // ── Step 6: Done ──
+    ui::section(6, TOTAL, "🎉 Summary");
     print_tree(&rules_folder, &details_parent);
+    ui::success_box("Installation complete!");
     println!();
-    ui::info("Start any AI-DLC workflow by saying: \"Using AI-DLC, ...\"");
+    ui::info("Start any AI-DLC workflow by telling your AI agent:");
+    println!(
+        "      {}",
+        style("\"Using AI-DLC, I want to build ...\"").italic()
+    );
+    println!();
 
     Ok(())
 }
@@ -151,14 +156,13 @@ fn make_spinner(msg: &str) -> ProgressBar {
     pb
 }
 
-/// Prints a visual tree of the installed file structure so the user can verify
-/// where rules and rule-details were placed.
+/// Prints a visual tree of the installed file structure.
 fn print_tree(rules_folder: &str, details_parent: &str) {
-    println!("  {}", style("Installed file tree:").dim());
-    println!("  {rules_folder}/");
-    println!("  ├── aws-aidlc-rules/");
-    println!("  │   └── core-workflow.md");
-    println!("  {details_parent}/");
+    println!("  {}", style("Installed:").dim());
+    println!("  {}/", style(rules_folder).bold());
+    println!("  └── rules/");
+    println!("      └── core-workflow.md");
+    println!("  {}/", style(details_parent).bold());
     println!("  └── aws-aidlc-rule-details/");
     println!("      ├── common/");
     println!("      ├── construction/");

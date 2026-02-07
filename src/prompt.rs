@@ -72,19 +72,23 @@ pub fn confirm_overwrite() -> Result<bool> {
         .interact()?)
 }
 
-/// Ask whether to add a path to .gitignore.
-pub fn confirm_gitignore(path: &str) -> Result<bool> {
+/// Ask whether to add the rules folder to .gitignore.
+pub fn confirm_gitignore_rules(rules_folder: &str) -> Result<bool> {
     Ok(Confirm::new()
-        .with_prompt(format!("Add `{path}` to .gitignore?"))
-        .default(true)
+        .with_prompt(format!(
+            "Exclude AI-DLC rules from version control? (adds `{rules_folder}/` to .gitignore)"
+        ))
+        .default(false)
         .interact()?)
 }
 
 /// Ask whether to add aidlc-docs/ to .gitignore.
 pub fn confirm_gitignore_aidlc_docs() -> Result<bool> {
     Ok(Confirm::new()
-        .with_prompt("Add `aidlc-docs/` to .gitignore?")
-        .default(true)
+        .with_prompt(
+            "Exclude AI-DLC generated docs from version control? (adds `aidlc-docs/` to .gitignore)",
+        )
+        .default(false)
         .interact()?)
 }
 

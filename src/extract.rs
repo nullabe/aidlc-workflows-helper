@@ -4,7 +4,7 @@
 //! The zip contains `aidlc-rules/aws-aidlc-rules/` (the core workflow) and
 //! `aidlc-rules/aws-aidlc-rule-details/` (supporting documents). These are mapped to:
 //!
-//! - `<rules_folder>/aws-aidlc-rules/` — e.g. `.kiro/steering/aws-aidlc-rules/`
+//! - `<rules_folder>/rules/` — e.g. `.kiro/steering/rules/core-workflow.md`
 //! - `<details_parent>/aws-aidlc-rule-details/` — e.g. `.kiro/aws-aidlc-rule-details/`
 
 use anyhow::{Context, Result};
@@ -13,9 +13,11 @@ use std::io;
 use std::path::{Path, PathBuf};
 
 /// Extract the zip and install rules into the target folders.
-/// `rules_folder` is where aws-aidlc-rules/ contents go (e.g. ".kiro/steering").
-/// `details_parent` is where aws-aidlc-rule-details/ goes (e.g. ".kiro").
-/// Returns list of installed file paths (relative to project root).
+///
+/// `aws-aidlc-rules/` from the zip is installed as `<rules_folder>/rules/` (renamed).
+/// `aws-aidlc-rule-details/` is installed as `<details_parent>/aws-aidlc-rule-details/`.
+///
+/// Returns list of installed file paths relative to the project root.
 pub fn extract_and_install(
     zip_path: &Path,
     rules_folder: &str,
@@ -30,13 +32,12 @@ pub fn extract_and_install(
         let mut entry = archive.by_index(i)?;
         let entry_path = entry.name().to_string();
 
+        // aws-aidlc-rules/ from zip → rules/ in target
         if let Some(rel) = entry_path.strip_prefix("aidlc-rules/aws-aidlc-rules/") {
             if rel.is_empty() || entry.is_dir() {
                 continue;
             }
-            let dest = PathBuf::from(rules_folder)
-                .join("aws-aidlc-rules")
-                .join(rel);
+            let dest = PathBuf::from(rules_folder).join("rules").join(rel);
             write_entry(&mut entry, &dest)?;
             installed.push(dest);
         } else if let Some(rel) = entry_path.strip_prefix("aidlc-rules/aws-aidlc-rule-details/") {
@@ -65,7 +66,7 @@ fn write_entry(entry: &mut zip::read::ZipFile<impl std::io::Read>, dest: &Path) 
 
 /// Check if rules already exist in the target folder.
 pub fn rules_exist(rules_folder: &str, details_parent: &str) -> bool {
-    PathBuf::from(rules_folder).join("aws-aidlc-rules").exists()
+    PathBuf::from(rules_folder).join("rules").exists()
         || PathBuf::from(details_parent)
             .join("aws-aidlc-rule-details")
             .exists()
@@ -99,7 +100,7 @@ mod tests {
     }
 
     #[test]
-    fn extracts_rules_and_details() {
+    fn extracts_rules_to_rules_dir_and_details() {
         let dir = tempfile::tempdir().unwrap();
         let zip_path = create_test_zip(dir.path());
 
@@ -115,7 +116,8 @@ mod tests {
 
         assert_eq!(installed.len(), 2);
 
-        let workflow = rules_folder.join("aws-aidlc-rules/core-workflow.md");
+        // aws-aidlc-rules/ from zip becomes rules/ in target
+        let workflow = rules_folder.join("rules/core-workflow.md");
         assert!(workflow.exists());
         assert_eq!(fs::read_to_string(&workflow).unwrap(), "# Core Workflow");
 
@@ -127,7 +129,7 @@ mod tests {
     #[test]
     fn rules_exist_detects_existing_folders() {
         let dir = tempfile::tempdir().unwrap();
-        let rules = dir.path().join("steering/aws-aidlc-rules");
+        let rules = dir.path().join("steering/rules");
         fs::create_dir_all(&rules).unwrap();
 
         assert!(rules_exist(
