@@ -44,8 +44,8 @@ src/
 - **Commit**: `feat: add dependencies and module scaffold`
 
 ### Step 2: UI Helpers + Banner
-- [ ] Implement `ui.rs` — `success()`, `error()`, `info()`, `step_done()` styled output helpers
-- [ ] Implement `banner.rs` — ASCII art banner with version from `env!("CARGO_PKG_VERSION")`
+- [x] Implement `ui.rs` — `success()`, `error()`, `info()`, `step_done()` styled output helpers
+- [x] Implement `banner.rs` — ASCII art banner with version from `env!("CARGO_PKG_VERSION")`
 - [ ] Stories: US-1 (AC-1.1), US-6 (AC-6.2, AC-6.3, AC-6.4)
 - **Commit**: `feat: add UI helpers and ASCII art banner`
 
