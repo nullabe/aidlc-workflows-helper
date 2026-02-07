@@ -1,10 +1,10 @@
 [package]
 name = "aidlc-workflows-helper"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2024"
 description = "CLI tool to install AI-DLC workflow rules into any project"
 license = "MIT-0"
-repository = "https://github.com/awslabs/aidlc-workflows-helper"
+repository = "https://github.com/nullabe/aidlc-workflows-helper"
 
 [dependencies]
 anyhow = "1"
