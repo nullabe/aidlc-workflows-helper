@@ -54,7 +54,7 @@ pub fn extract_and_install(
     Ok(installed)
 }
 
-fn write_entry(entry: &mut zip::read::ZipFile, dest: &Path) -> Result<()> {
+fn write_entry(entry: &mut zip::read::ZipFile<impl std::io::Read>, dest: &Path) -> Result<()> {
     if let Some(parent) = dest.parent() {
         fs::create_dir_all(parent)?;
     }

@@ -8,16 +8,16 @@ repository = "https://github.com/awslabs/aidlc-workflows-helper"
 
 [dependencies]
 anyhow = "1"
-console = "0.15"
-dialoguer = "0.11"
+console = "0.16"
+dialoguer = "0.12"
 dirs = "6"
-indicatif = "0.17"
-reqwest = { version = "0.12", features = ["blocking", "rustls-tls", "json"], default-features = false }
+indicatif = "0.18"
+reqwest = { version = "0.13", features = ["blocking", "rustls", "json"], default-features = false }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 sha2 = "0.10"
 walkdir = "2"
-zip = "2"
+zip = "7"
 
 [dev-dependencies]
 tempfile = "3"
