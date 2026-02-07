@@ -76,8 +76,8 @@ src/
 - **Commit**: `feat: add zip extraction and rules installation`
 
 ### Step 7: Path Patching + Commit Workflow Patching
-- [ ] Implement `patch.rs` — `patch_rule_details_path()` replaces default paths in `core-workflow.md` with user's chosen folder
-- [ ] Implement `patch.rs` — `patch_commit_workflow()` appends commit section based on user preference
+- [x] Implement `patch.rs` — `patch_rule_details_path()` replaces default paths in `core-workflow.md` with user's chosen folder
+- [x] Implement `patch.rs` — `patch_commit_workflow()` appends commit section based on user preference
 - [ ] Stories: US-1 (AC-1.5), US-11 (AC-11.2, AC-11.3, AC-11.4), FR-2, FR-13
 - **Commit**: `feat: add core-workflow.md patching (paths + commit workflow)`
 
