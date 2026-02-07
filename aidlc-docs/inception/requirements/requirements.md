@@ -73,6 +73,7 @@
 ### FR-13: Commit Workflow Preference Prompt
 - Ask the user about their preferred commit workflow (e.g. "Conventional Commits", "Free-form", "None / I handle commits myself").
 - If the user selects a commit style, patch `core-workflow.md` to include a MANDATORY commit section matching their preference (conventional commits format, frequency rules, etc.).
+- The commit section must also instruct the AI to commit artifact generation (docs, plans, state updates) — not just code.
 - If the user selects "None", do not add any commit rules to `core-workflow.md`.
 
 ## Non-Functional Requirements
