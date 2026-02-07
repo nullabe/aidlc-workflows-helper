@@ -38,8 +38,8 @@ src/
 ## Execution Steps
 
 ### Step 1: Project Setup — Cargo.toml + Module Scaffold
-- [ ] Update `Cargo.toml` with all dependencies and release profile (lto, strip, opt-level)
-- [ ] Create all module files with `mod` declarations in `main.rs`
+- [x] Update `Cargo.toml` with all dependencies and release profile (lto, strip, opt-level)
+- [x] Create all module files with `mod` declarations in `main.rs`
 - [ ] Stories: NFR-1, NFR-6
 - **Commit**: `feat: add dependencies and module scaffold`
 
