@@ -78,7 +78,7 @@ pub fn confirm_gitignore_rules(rules_folder: &str) -> Result<bool> {
         .with_prompt(format!(
             "Exclude AI-DLC rules from version control? (adds `{rules_folder}/` to .gitignore)"
         ))
-        .default(false)
+        .default(true)
         .interact()?)
 }
 

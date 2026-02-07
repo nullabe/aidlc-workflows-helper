@@ -1,45 +1,32 @@
 //! ASCII art banner displayed on startup.
 //!
-//! Shows the tool name, version, and a link to the upstream project.
+//! Shows the tool identity with an AWS Labs branded ASCII art logo.
 
 use console::style;
 
-/// Displays the startup banner with tool identity and version.
+/// Displays the startup banner with ASCII art and version.
 pub fn print_banner() {
+    let logo = r#"
+       ___        ______    _          _
+      / \ \      / / ___|  | |    __ _| |__  ___
+     / _ \ \ /\ / /\___ \  | |   / _` | '_ \/ __|
+    / ___ \ V  V /  ___) | | |__| (_| | |_) \__ \
+   /_/   \_\_/\_/  |____/  |_____\__,_|_.__/|___/
+"#;
+    println!("{}", style(logo).yellow());
+
+    let title = r#"     _    ___      ____  _     ____
+    / \  |_ _|    |  _ \| |   / ___|
+   / _ \  | | ___ | | | | |  | |
+  / ___ \ | ||___|| |_| | |__| |___
+ /_/   \_\___|    |____/|_____\____|"#;
+    println!("{}", style(title).cyan().bold());
     println!();
     println!(
-        "  {}",
-        style("┌─────────────────────────────────────────────┐").cyan()
-    );
-    println!(
-        "  {}",
-        style("│                                             │").cyan()
-    );
-    println!(
-        "  {}  {}  {}",
-        style("│").cyan(),
-        style("⚡ AI-DLC Workflows Helper").bold().cyan(),
-        style("              │").cyan()
-    );
-    println!(
-        "  {}     {}  {}",
-        style("│").cyan(),
-        style(format!("v{}", env!("CARGO_PKG_VERSION"))).dim(),
-        style("                          │").cyan()
-    );
-    println!(
-        "  {}",
-        style("│                                             │").cyan()
-    );
-    println!(
-        "  {}",
-        style("└─────────────────────────────────────────────┘").cyan()
-    );
-    println!();
-    println!(
-        "  {}  {}",
-        style("→").dim(),
-        style("Install AI-DLC workflow rules into any project").dim()
+        "  {} {}   {}",
+        style("⚡").yellow(),
+        style("Workflows Helper").bold(),
+        style(format!("v{}", env!("CARGO_PKG_VERSION"))).dim()
     );
     println!(
         "  {}  {}",
