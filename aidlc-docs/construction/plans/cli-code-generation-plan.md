@@ -94,9 +94,9 @@ src/
 - **Commit**: `feat: add installed rules integrity manifest`
 
 ### Step 10: Main Orchestration + Final Summary
-- [ ] Wire everything together in `main.rs` — the full interactive flow
-- [ ] Implement final success summary with installed file tree (US-1 AC-1.7, US-6 AC-6.5)
-- [ ] Handle overwrite flow with integrity check warning
+- [x] Wire everything together in `main.rs` — the full interactive flow
+- [x] Implement final success summary with installed file tree (US-1 AC-1.7, US-6 AC-6.5)
+- [x] Handle overwrite flow with integrity check warning
 - [ ] Stories: US-1 (AC-1.6, AC-1.7), US-2 (AC-2.2), US-6 (AC-6.5)
 - **Commit**: `feat: wire main orchestration and success summary`
 
