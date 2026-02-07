@@ -82,8 +82,8 @@ src/
 - **Commit**: `feat: add core-workflow.md patching (paths + commit workflow)`
 
 ### Step 8: Gitignore Management
-- [ ] Implement `gitignore.rs` — `add_to_gitignore()` with no-duplicate, create-if-missing
-- [ ] Handle FR-12: always add `aidlc-docs/audit.md` unconditionally
+- [x] Implement `gitignore.rs` — `add_to_gitignore()` with no-duplicate, create-if-missing
+- [x] Handle FR-12: always add `aidlc-docs/audit.md` unconditionally
 - [ ] Stories: US-3 (AC-3.1, AC-3.2, AC-3.3), US-4 (AC-4.1, AC-4.2), FR-12
 - **Commit**: `feat: add gitignore management`
 
