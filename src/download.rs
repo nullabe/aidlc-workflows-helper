@@ -4,7 +4,7 @@
 //! with `https_only(true)` in `main.rs`). The checksum is computed during download and
 //! returned to the caller for storage in the cache.
 
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use sha2::{Digest, Sha256};
 use std::fs;
 use std::io::Write;

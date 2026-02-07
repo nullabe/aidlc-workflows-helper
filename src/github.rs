@@ -4,7 +4,7 @@
 //! the current version tag and zip download URL. Validates that the download URL
 //! points to the trusted `github.com/awslabs/aidlc-workflows` origin.
 
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use serde::Deserialize;
 
 const API_URL: &str = "https://api.github.com/repos/awslabs/aidlc-workflows/releases/latest";
