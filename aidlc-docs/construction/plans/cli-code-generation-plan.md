@@ -64,8 +64,8 @@ src/
 - **Commit**: `feat: add GitHub API client and secure download with checksum`
 
 ### Step 5: Cache Management
-- [ ] Implement `cache.rs` — `get_cache_dir()`, `get_cached_zip()`, `store_in_cache()`, `cleanup_old_versions()`
-- [ ] Integrate cache into download flow (skip download if cached version matches latest)
+- [x] Implement `cache.rs` — `get_cache_dir()`, `get_cached_zip()`, `store_in_cache()`, `cleanup_old_versions()`
+- [x] Integrate cache into download flow (skip download if cached version matches latest)
 - [ ] Stories: US-7 (AC-7.1, AC-7.2, AC-7.3, AC-7.4)
 - **Commit**: `feat: add download cache with version-keyed storage`
 
