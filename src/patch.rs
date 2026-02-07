@@ -78,6 +78,28 @@ Remember to commit your changes regularly. Small, frequent commits are easier to
 Commit documentation artifacts (requirements, stories, plans) alongside code changes.
 "#;
 
+const RELATIVE_PATHS_SECTION: &str = r#"
+
+## MANDATORY: Relative Paths Only
+**CRITICAL**: All file and folder references in AI-DLC documents (aidlc-state.md, plans, requirements, stories, code summaries) MUST use paths relative to the workspace root.
+- **NEVER** use absolute paths (e.g. `/Users/...`, `/home/...`, `C:\...`).
+- The `Workspace Root` in `aidlc-state.md` MUST be `.` (dot), not an absolute path.
+- This prevents leaking personal filesystem information into version control.
+"#;
+
+/// Append the relative-paths-only rule to core-workflow.md. Always applied.
+pub fn patch_relative_paths_rule(rules_folder: &str) -> Result<()> {
+    let workflow_path = Path::new(rules_folder).join("rules/core-workflow.md");
+    if !workflow_path.exists() {
+        return Ok(());
+    }
+
+    let mut content = fs::read_to_string(&workflow_path)?;
+    content.push_str(RELATIVE_PATHS_SECTION);
+    fs::write(&workflow_path, content)?;
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

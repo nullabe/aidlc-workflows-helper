@@ -98,6 +98,10 @@ fn run() -> Result<()> {
     patch::patch_rule_details_path(&rules_folder, &details_parent)?;
     ui::step_done("Patched core-workflow.md path references");
 
+    // Enforce relative paths rule
+    patch::patch_relative_paths_rule(&rules_folder)?;
+    ui::step_done("Added relative-paths-only rule to core-workflow.md");
+
     // Write integrity manifest
     integrity::write_manifest(&installed, &details_parent)?;
     ui::step_done("Integrity manifest written");
@@ -114,9 +118,10 @@ fn run() -> Result<()> {
     // ── Step 5: Gitignore ──
     ui::section(5, TOTAL, "🔒 Gitignore configuration");
 
-    // FR-12: always add aidlc-docs/audit.md (no prompt)
+    // Always gitignore session-specific files (no prompt)
     gitignore::add_to_gitignore("aidlc-docs/audit.md")?;
-    ui::step_done("Auto-added aidlc-docs/audit.md to .gitignore");
+    gitignore::add_to_gitignore("aidlc-docs/aidlc-state.md")?;
+    ui::step_done("Auto-added aidlc-docs/audit.md and aidlc-docs/aidlc-state.md to .gitignore");
 
     if prompt::confirm_gitignore_rules(&rules_folder)? {
         gitignore::add_to_gitignore(&format!("{rules_folder}/"))?;
