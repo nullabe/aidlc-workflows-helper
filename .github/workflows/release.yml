@@ -1,15 +1,17 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: ["v*"]
 
 permissions:
   contents: write
 
 jobs:
   build:
+    if: github.event.workflow_run.conclusion == 'success' && startsWith(github.event.workflow_run.head_branch, 'v')
     strategy:
       matrix:
         include:
@@ -28,6 +30,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
@@ -76,5 +80,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.event.workflow_run.head_branch }}
           files: aidlc-workflows-helper-*
           generate_release_notes: true
