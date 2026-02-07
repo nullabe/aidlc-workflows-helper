@@ -50,9 +50,9 @@ src/
 - **Commit**: `feat: add UI helpers and ASCII art banner`
 
 ### Step 3: Interactive Prompts
-- [ ] Implement `prompt.rs` — `select_folder()` with presets (.kiro/steering, .amazonq/rules, .cursor/rules, custom)
-- [ ] Implement `prompt.rs` — `confirm_overwrite()`, `confirm_gitignore()`, `confirm_gitignore_aidlc_docs()`
-- [ ] Implement `prompt.rs` — `select_commit_workflow()` (Conventional Commits / Free-form / None)
+- [x] Implement `prompt.rs` — `select_folder()` with presets (.kiro/steering, .amazonq/rules, .cursor/rules, custom)
+- [x] Implement `prompt.rs` — `confirm_overwrite()`, `confirm_gitignore()`, `confirm_gitignore_aidlc_docs()`
+- [x] Implement `prompt.rs` — `select_commit_workflow()` (Conventional Commits / Free-form / None)
 - [ ] Stories: US-1 (AC-1.2), US-2 (AC-2.1), US-3 (AC-3.1), US-4 (AC-4.1), US-11 (AC-11.1)
 - **Commit**: `feat: add interactive prompts (folder, overwrite, gitignore, commit workflow)`
 
