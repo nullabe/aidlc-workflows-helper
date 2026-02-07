@@ -57,9 +57,9 @@ src/
 - **Commit**: `feat: add interactive prompts (folder, overwrite, gitignore, commit workflow)`
 
 ### Step 4: GitHub API + Download
-- [ ] Implement `github.rs` — `fetch_latest_release()` → returns tag name + zip URL + optional checksum URL
-- [ ] Implement `download.rs` — `download_zip()` with spinner, HTTPS-only, TLS validation
-- [ ] Implement `download.rs` — `verify_checksum()` SHA-256 verification
+- [x] Implement `github.rs` — `fetch_latest_release()` → returns tag name + zip URL + optional checksum URL
+- [x] Implement `download.rs` — `download_zip()` with spinner, HTTPS-only, TLS validation
+- [x] Implement `download.rs` — `verify_checksum()` SHA-256 verification
 - [ ] Stories: US-1 (AC-1.3), US-5 (AC-5.1, AC-5.2, AC-5.3), US-8 (AC-8.1, AC-8.2, AC-8.3), US-10 (AC-10.1, AC-10.2, AC-10.3)
 - **Commit**: `feat: add GitHub API client and secure download with checksum`
 
