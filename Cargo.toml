@@ -1,6 +1,6 @@
 [package]
 name = "aidlc-workflows-helper"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 description = "CLI tool to install AI-DLC workflow rules into any project"
 license = "MIT-0"
