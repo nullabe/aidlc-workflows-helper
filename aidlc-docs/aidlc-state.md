@@ -21,5 +21,5 @@
 - [x] INCEPTION - Requirements Analysis
 - [x] INCEPTION - User Stories
 - [x] INCEPTION - Workflow Planning
-- [ ] CONSTRUCTION - Code Generation
+- [x] CONSTRUCTION - Code Generation
 - [ ] CONSTRUCTION - Build and Test

@@ -101,13 +101,13 @@ src/
 - **Commit**: `feat: wire main orchestration and success summary`
 
 ### Step 11: Documentation + CI
-- [ ] Create `README.md` with installation (curl one-liner), usage, contributing guide
-- [ ] Create `LICENSE` (MIT-0)
-- [ ] Create `.github/workflows/release.yml` — cross-platform release builds on tag push (5 targets)
+- [x] Create `README.md` with installation (curl one-liner), usage, contributing guide
+- [x] Create `LICENSE` (MIT-0)
+- [x] Create `.github/workflows/release.yml` — cross-platform release builds on tag push (5 targets)
 - [ ] Stories: NFR-2, NFR-3
 - **Commit**: `docs: add README, LICENSE, and release CI workflow`
 
 ### Step 12: Code Generation Summary
-- [ ] Create `aidlc-docs/construction/cli/code/code-summary.md` with file listing and architecture overview
+- [x] Create `aidlc-docs/construction/cli/code/code-summary.md` with file listing and architecture overview
 
 ## Total: 12 steps, 11 commits
