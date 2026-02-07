@@ -15,7 +15,6 @@ indicatif = "0.18"
 reqwest = { version = "0.13", features = ["blocking", "rustls", "json"], default-features = false }
 serde = { version = "1", features = ["derive"] }
 sha2 = "0.10"
-walkdir = "2"
 zip = "7"
 
 [dev-dependencies]

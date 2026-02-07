@@ -32,7 +32,6 @@ dependencies = [
  "serde",
  "sha2",
  "tempfile",
- "walkdir",
  "zip",
 ]
 
