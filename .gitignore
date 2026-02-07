@@ -1,0 +1,4 @@
+/target
+.aiassistant/
+.idea/
+aidlc-docs/audit.md
