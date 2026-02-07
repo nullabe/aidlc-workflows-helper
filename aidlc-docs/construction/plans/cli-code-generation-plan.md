@@ -70,8 +70,8 @@ src/
 - **Commit**: `feat: add download cache with version-keyed storage`
 
 ### Step 6: Zip Extraction + File Installation
-- [ ] Implement `extract.rs` — `extract_and_install()` extracts zip, locates `aidlc-rules/`, copies `aws-aidlc-rules/` → `<folder>/rules/` and `aws-aidlc-rule-details/` → `<folder>/`
-- [ ] Handle the nested directory inside the zip (GitHub zips have a root folder like `aidlc-workflows-vX.Y.Z/`)
+- [x] Implement `extract.rs` — `extract_and_install()` extracts zip, locates `aidlc-rules/`, copies `aws-aidlc-rules/` → `<folder>/rules/` and `aws-aidlc-rule-details/` → `<folder>/`
+- [x] Handle the nested directory inside the zip (GitHub zips have a root folder like `aidlc-workflows-vX.Y.Z/`)
 - [ ] Stories: US-1 (AC-1.4), US-2 (AC-2.3)
 - **Commit**: `feat: add zip extraction and rules installation`
 
