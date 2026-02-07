@@ -69,3 +69,76 @@ const FREEFORM_SECTION: &str = r#"
 Remember to commit your changes regularly. Small, frequent commits are easier to review and revert.
 Commit documentation artifacts (requirements, stories, plans) alongside code changes.
 "#;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+
+    fn setup_workflow(dir: &Path, content: &str) -> String {
+        let rules = dir.join("rules/aws-aidlc-rules");
+        fs::create_dir_all(&rules).unwrap();
+        let file = rules.join("core-workflow.md");
+        fs::write(&file, content).unwrap();
+        dir.join("rules").to_string_lossy().to_string()
+    }
+
+    #[test]
+    fn patches_kiro_path() {
+        let dir = tempfile::tempdir().unwrap();
+        let rules_folder = setup_workflow(
+            dir.path(),
+            "Load from `.kiro/aws-aidlc-rule-details/common/foo.md`",
+        );
+        patch_rule_details_path(&rules_folder, ".custom").unwrap();
+        let result =
+            fs::read_to_string(dir.path().join("rules/aws-aidlc-rules/core-workflow.md")).unwrap();
+        assert!(result.contains(".custom/aws-aidlc-rule-details/common/foo.md"));
+        assert!(!result.contains(".kiro/aws-aidlc-rule-details/"));
+    }
+
+    #[test]
+    fn patches_amazonq_path() {
+        let dir = tempfile::tempdir().unwrap();
+        let rules_folder = setup_workflow(
+            dir.path(),
+            "Use `.amazonq/aws-aidlc-rule-details/` directory",
+        );
+        patch_rule_details_path(&rules_folder, ".myagent").unwrap();
+        let result =
+            fs::read_to_string(dir.path().join("rules/aws-aidlc-rules/core-workflow.md")).unwrap();
+        assert!(result.contains(".myagent/aws-aidlc-rule-details/"));
+    }
+
+    #[test]
+    fn appends_conventional_commit_section() {
+        let dir = tempfile::tempdir().unwrap();
+        let rules_folder = setup_workflow(dir.path(), "# Workflow\n");
+        patch_commit_workflow(&rules_folder, &CommitWorkflow::Conventional).unwrap();
+        let result =
+            fs::read_to_string(dir.path().join("rules/aws-aidlc-rules/core-workflow.md")).unwrap();
+        assert!(result.contains("MANDATORY: Commit Workflow"));
+        assert!(result.contains("conventional commit format"));
+    }
+
+    #[test]
+    fn appends_freeform_section() {
+        let dir = tempfile::tempdir().unwrap();
+        let rules_folder = setup_workflow(dir.path(), "# Workflow\n");
+        patch_commit_workflow(&rules_folder, &CommitWorkflow::FreeForm).unwrap();
+        let result =
+            fs::read_to_string(dir.path().join("rules/aws-aidlc-rules/core-workflow.md")).unwrap();
+        assert!(result.contains("Commit Reminder"));
+    }
+
+    #[test]
+    fn none_does_not_modify_file() {
+        let dir = tempfile::tempdir().unwrap();
+        let original = "# Workflow\n";
+        let rules_folder = setup_workflow(dir.path(), original);
+        patch_commit_workflow(&rules_folder, &CommitWorkflow::None).unwrap();
+        let result =
+            fs::read_to_string(dir.path().join("rules/aws-aidlc-rules/core-workflow.md")).unwrap();
+        assert_eq!(result, original);
+    }
+}

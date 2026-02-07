@@ -45,3 +45,33 @@ pub fn verify_checksum(path: &Path, expected: &str) -> Result<()> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+
+    #[test]
+    fn verify_checksum_passes_for_correct_hash() {
+        let dir = tempfile::tempdir().unwrap();
+        let file = dir.path().join("test.bin");
+        fs::write(&file, b"hello world").unwrap();
+
+        let expected = "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9";
+        verify_checksum(&file, expected).unwrap();
+    }
+
+    #[test]
+    fn verify_checksum_fails_and_deletes_file() {
+        let dir = tempfile::tempdir().unwrap();
+        let file = dir.path().join("test.bin");
+        fs::write(&file, b"hello world").unwrap();
+
+        let result = verify_checksum(
+            &file,
+            "0000000000000000000000000000000000000000000000000000000000000000",
+        );
+        assert!(result.is_err());
+        assert!(!file.exists(), "corrupted file should be deleted");
+    }
+}

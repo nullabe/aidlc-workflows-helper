@@ -57,3 +57,66 @@ pub fn verify_manifest(details_parent: &str) -> Result<Vec<String>> {
 
     Ok(modified)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+
+    #[test]
+    fn write_and_verify_unmodified() {
+        let dir = tempfile::tempdir().unwrap();
+        let parent = dir.path().to_string_lossy().to_string();
+
+        let md_file = dir.path().join("test.md");
+        fs::write(&md_file, "# Hello").unwrap();
+
+        write_manifest(&[md_file.clone()], &parent).unwrap();
+
+        let manifest = dir.path().join(".aidlc-integrity.sha256");
+        assert!(manifest.exists());
+
+        let modified = verify_manifest(&parent).unwrap();
+        assert!(modified.is_empty());
+    }
+
+    #[test]
+    fn detects_modified_file() {
+        let dir = tempfile::tempdir().unwrap();
+        let parent = dir.path().to_string_lossy().to_string();
+
+        let md_file = dir.path().join("test.md");
+        fs::write(&md_file, "# Original").unwrap();
+
+        write_manifest(&[md_file.clone()], &parent).unwrap();
+
+        // Tamper with the file
+        fs::write(&md_file, "# Tampered").unwrap();
+
+        let modified = verify_manifest(&parent).unwrap();
+        assert_eq!(modified.len(), 1);
+    }
+
+    #[test]
+    fn skips_non_md_files() {
+        let dir = tempfile::tempdir().unwrap();
+        let parent = dir.path().to_string_lossy().to_string();
+
+        let txt_file = dir.path().join("readme.txt");
+        fs::write(&txt_file, "hello").unwrap();
+
+        write_manifest(&[txt_file], &parent).unwrap();
+
+        let manifest = fs::read_to_string(dir.path().join(".aidlc-integrity.sha256")).unwrap();
+        // Only a trailing newline — no entries for .txt files
+        assert_eq!(manifest.trim(), "");
+    }
+
+    #[test]
+    fn no_manifest_returns_empty() {
+        let dir = tempfile::tempdir().unwrap();
+        let parent = dir.path().to_string_lossy().to_string();
+        let modified = verify_manifest(&parent).unwrap();
+        assert!(modified.is_empty());
+    }
+}
